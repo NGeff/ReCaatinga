@@ -1,0 +1,25 @@
+{
+  "name": "recaatinga",
+  "version": "2.0.0",
+  "description": "ReCaatinga - Plataforma Gamificada",
+  "scripts": {
+    "install:server": "cd backend && npm install",
+    "install:client": "cd frontend && npm install",
+    "install:all": "npm run install:server && npm run install:client",
+    "build:client": "cd frontend && npm run build",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm run install:all && npm run build:client",
+    "start:prod": "cd backend && NODE_ENV=production node src/server.js",
+    "deploy": "npm run build && npm run start:prod"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "express-session": "^1.18.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  }
+}
