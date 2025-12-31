@@ -67,17 +67,12 @@ const CreateGame = () => {
       return;
     }
     
-    if (!formData.content || Object.keys(formData.content).length === 0) {
-      toast.error('Configure o conteúdo do jogo antes de criar');
-      return;
-    }
-    
     setLoading(true);
 
     try {
-      await gameAPI.create(formData);
-      toast.success('Jogo criado com sucesso! A ordem foi definida automaticamente.');
-      navigate('/admin/content-manager');
+      const response = await gameAPI.create(formData);
+      toast.success('Jogo criado! Configure o conteúdo agora.');
+      navigate(`/admin/edit-game-content/${response.data._id}`);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Erro ao criar jogo');
     } finally {
@@ -92,13 +87,6 @@ const CreateGame = () => {
       [name]: ['points', 'timeLimit', 'maxAttempts'].includes(name)
         ? parseInt(value) || 0 
         : value
-    }));
-  };
-
-  const handleContentChange = (newContent) => {
-    setFormData(prev => ({
-      ...prev,
-      content: newContent
     }));
   };
 
@@ -158,19 +146,14 @@ const CreateGame = () => {
                 <option value="">Selecione uma fase</option>
                 {phases.map(phase => (
                   <option key={phase._id} value={phase._id}>
-                    #{phase.order} - {phase.title}
+                    {phase.title}
                   </option>
                 ))}
               </select>
-              {selectedPhase && (
-                <small>
-                  Categoria: {selectedPhase.category} • Dificuldade: {selectedPhase.difficulty}
-                </small>
-              )}
             </div>
 
             <div className="input-group">
-              <label>Missão (Tipo: Jogos) *</label>
+              <label>Missão (Jogos Educacionais) *</label>
               <select
                 name="mission"
                 value={formData.mission}
@@ -178,39 +161,17 @@ const CreateGame = () => {
                 required
                 disabled={!formData.phase || !!location.state?.missionId}
               >
-                <option value="">
-                  {!formData.phase 
-                    ? 'Selecione uma fase primeiro' 
-                    : missions.length === 0 
-                      ? 'Nenhuma missão de jogos encontrada'
-                      : 'Selecione uma missão'
-                  }
-                </option>
+                <option value="">Selecione uma missão</option>
                 {missions.map(mission => (
                   <option key={mission._id} value={mission._id}>
-                    #{mission.order} - {mission.title}
+                    {mission.title}
                   </option>
                 ))}
               </select>
-              {selectedMission && (
-                <small>
-                  ⭐ {selectedMission.experienceReward} XP • 🎯 {selectedMission.pointsReward} pontos
-                </small>
+              {formData.phase && missions.length === 0 && (
+                <small className="text-warning">Esta fase não possui missões do tipo "Jogos Educacionais"</small>
               )}
             </div>
-
-            {missions.length === 0 && formData.phase && (
-              <div className="alert info">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M12 16v-4M12 8h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-                <div>
-                  <strong>Nenhuma missão de jogos encontrada</strong>
-                  <p>Primeiro crie uma missão do tipo "Jogos Educacionais" nesta fase.</p>
-                </div>
-              </div>
-            )}
 
             <div className="input-group">
               <label>Título do Jogo *</label>
@@ -219,17 +180,17 @@ const CreateGame = () => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="Ex: Quiz sobre a Flora da Caatinga"
                 required
+                placeholder="Ex: Quiz sobre Fotossíntese"
               />
             </div>
 
             <div className="input-group">
               <label>Tipo de Jogo *</label>
               <div className="game-type-grid">
-                {gameTypes.map((gameType) => (
-                  <label 
-                    key={gameType.value} 
+                {gameTypes.map(gameType => (
+                  <label
+                    key={gameType.value}
                     className={`game-type-card ${formData.type === gameType.value ? 'selected' : ''}`}
                   >
                     <input
@@ -297,8 +258,8 @@ const CreateGame = () => {
                 <path d="M12 16v-4M12 8h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
               <div>
-                <strong>Configuração do Conteúdo</strong>
-                <p>Após criar o jogo base, você será redirecionado para configurar o conteúdo específico (perguntas, imagens, etc.) através da página de edição.</p>
+                <strong>Próximo Passo</strong>
+                <p>Após criar o jogo, você será direcionado automaticamente para configurar o conteúdo específico (perguntas, imagens, pares, etc.).</p>
               </div>
             </div>
 
@@ -307,7 +268,7 @@ const CreateGame = () => {
                 Cancelar
               </Link>
               <button type="submit" className="btn btn-primary" disabled={loading || !formData.mission}>
-                {loading ? 'Criando...' : 'Criar Jogo'}
+                {loading ? 'Criando...' : 'Criar e Configurar Conteúdo'}
               </button>
             </div>
           </form>
