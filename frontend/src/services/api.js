@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const API_URL = 'https://recaatinga.com.br/api';
 
@@ -18,6 +19,41 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      const isLoginPage = window.location.pathname === '/login';
+      const isRegisterPage = window.location.pathname === '/register';
+      const isVerifyPage = window.location.pathname === '/verify';
+      const isForgotPasswordPage = window.location.pathname === '/forgot-password';
+      const isResetPasswordPage = window.location.pathname.startsWith('/reset-password');
+
+      if (!isLoginPage && !isRegisterPage && !isVerifyPage && !isForgotPasswordPage && !isResetPasswordPage) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        delete axios.defaults.headers.common['Authorization'];
+        
+        toast.error('Sessão expirada. Faça login novamente.', {
+          position: 'top-center',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 500);
+      }
+    }
     return Promise.reject(error);
   }
 );
@@ -75,57 +111,42 @@ export const phaseAPI = {
 };
 
 export const missionAPI = {
-  getByPhase: (phaseId) => api.get(`/missions/phase/${phaseId}`),
+  getAll: () => api.get('/missions'),
   getById: (id) => api.get(`/missions/${id}`),
+  getByPhase: (phaseId) => api.get(`/missions/phase/${phaseId}`),
   create: (data) => api.post('/missions', data),
   update: (id, data) => api.put(`/missions/${id}`, data),
   delete: (id) => api.delete(`/missions/${id}`),
-  completeVideo: (id) => api.post(`/progress/mission/${id}`, { score: 100 }),
+  updateOrder: (phaseId, missions) => api.put(`/missions/phase/${phaseId}/order`, { missions }),
 };
 
 export const gameAPI = {
-  getByPhase: (phaseId) => api.get(`/games/phase/${phaseId}`),
-  getByMission: (missionId) => api.get(`/games/mission/${missionId}`),
+  getAll: () => api.get('/games'),
   getById: (id) => api.get(`/games/${id}`),
+  getByMission: (missionId) => api.get(`/games/mission/${missionId}`),
   create: (data) => api.post('/games', data),
   update: (id, data) => api.put(`/games/${id}`, data),
   delete: (id) => api.delete(`/games/${id}`),
-  submitScore: (gameId, score) => api.post(`/games/${gameId}/submit`, { score }),
-};
-
-export const taskAPI = {
-  submit: (data) => api.post('/tasks/submit', data, {
-    headers: { 'Content-Type': 'application/json' }
-  }),
-  getPending: () => api.get('/tasks/pending'),
-  getMySubmissions: () => api.get('/tasks/my-submissions'),
-  review: (submissionId, data) => api.put(`/tasks/review/${submissionId}`, data),
+  submitAnswer: (gameId, data) => api.post(`/games/${gameId}/submit`, data),
 };
 
 export const progressAPI = {
-  getUser: () => api.get('/progress'),
-  getPhase: (phaseId) => api.get(`/progress/phase/${phaseId}`),
-  getOverall: () => api.get('/progress/overall'),
-  markVideoWatched: (phaseId) => api.post(`/progress/video/${phaseId}`),
-  completeMission: (missionId, score) => api.post(`/progress/mission/${missionId}`, { score }),
-  setActiveBadge: (badgeId) => api.put('/progress/active-badge', { badgeId }),
+  getUserProgress: () => api.get('/progress'),
+  getPhaseProgress: (phaseId) => api.get(`/progress/phase/${phaseId}`),
+  getMissionProgress: (missionId) => api.get(`/progress/mission/${missionId}`),
+  updateProgress: (data) => api.post('/progress', data),
+  completeGame: (gameId, data) => api.post(`/progress/game/${gameId}/complete`, data),
 };
 
 export const rankingAPI = {
-  getTop: (limit = 10) => api.get(`/ranking/top?limit=${limit}`),
-  getUserRank: (userId) => api.get(`/ranking/position/${userId || ''}`),
-};
-
-export const userAPI = {
-  getAll: () => api.get('/users'),
-  getById: (id) => api.get(`/users/${id}`),
-  update: (id, data) => api.put(`/users/${id}`, data),
+  getGlobalRanking: (limit = 10) => api.get(`/ranking?limit=${limit}`),
+  getUserRank: () => api.get('/ranking/me'),
+  getPhaseRanking: (phaseId, limit = 10) => api.get(`/ranking/phase/${phaseId}?limit=${limit}`),
 };
 
 export const achievementAPI = {
   getAll: () => api.get('/achievements'),
   getUserAchievements: () => api.get('/achievements/user'),
-  getUserStats: (userId) => api.get(userId ? `/achievements/user/stats/${userId}` : '/achievements/user/stats'),
   create: (data) => api.post('/achievements', data),
   update: (id, data) => api.put(`/achievements/${id}`, data),
   delete: (id) => api.delete(`/achievements/${id}`),
@@ -133,13 +154,27 @@ export const achievementAPI = {
 
 export const analyticsAPI = {
   getDashboard: () => api.get('/analytics/dashboard'),
+  getUserStats: () => api.get('/analytics/user/stats'),
+  getPhaseStats: (phaseId) => api.get(`/analytics/phase/${phaseId}`),
+};
+
+export const taskAPI = {
+  submit: (missionId, data) => api.post(`/tasks/submit/${missionId}`, data),
+  getSubmissions: () => api.get('/tasks/submissions'),
+  getMissionSubmissions: (missionId) => api.get(`/tasks/submissions/mission/${missionId}`),
+  getPendingReviews: () => api.get('/tasks/pending'),
+  review: (submissionId, data) => api.put(`/tasks/review/${submissionId}`, data),
+};
+
+export const puzzleAPI = {
+  generate: (imageUrl, pieces) => api.post('/puzzle/generate', { imageUrl, pieces }),
 };
 
 export const notificationAPI = {
+  getAll: () => api.get('/notifications'),
+  markAsRead: (id) => api.put(`/notifications/${id}/read`),
+  markAllAsRead: () => api.put('/notifications/read-all'),
   registerDevice: (data) => api.post('/notifications/register-device', data),
-  sendToAll: (data) => api.post('/notifications/send-all', data),
-  sendToUser: (userId, data) => api.post(`/notifications/send-user/${userId}`, data),
-  getHistory: () => api.get('/notifications/history'),
 };
 
 export default api;
