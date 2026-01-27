@@ -1,0 +1,362 @@
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: white;
+  color: var(--admin-text);
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: 1px solid var(--admin-border);
+  transition: all 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.back-button:hover {
+  background: var(--admin-bg);
+  border-color: var(--admin-primary);
+  color: var(--admin-primary);
+}
+
+.analytics-overview {
+  margin-bottom: 3rem;
+}
+
+.analytics-overview h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin-bottom: 1.5rem;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.analytics-card {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  border: 2px solid var(--admin-border);
+  transition: all 0.2s;
+}
+
+.analytics-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.analytics-card.blue {
+  border-color: var(--admin-blue);
+}
+
+.analytics-card.green {
+  border-color: var(--admin-green);
+}
+
+.analytics-card.purple {
+  border-color: var(--admin-purple);
+}
+
+.analytics-card.gold {
+  border-color: var(--admin-gold);
+}
+
+.analytics-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.analytics-card.blue .analytics-icon {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: var(--admin-blue);
+}
+
+.analytics-card.green .analytics-icon {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: var(--admin-green);
+}
+
+.analytics-card.purple .analytics-icon {
+  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+  color: var(--admin-purple);
+}
+
+.analytics-card.gold .analytics-icon {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: var(--admin-gold);
+}
+
+.analytics-content h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--admin-text-light);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.analytics-value {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--admin-text);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.analytics-label {
+  font-size: 0.875rem;
+  color: var(--admin-text-light);
+}
+
+.top-players-section {
+  margin-bottom: 3rem;
+}
+
+.top-players-section h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin-bottom: 1.5rem;
+}
+
+.top-players-table {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid var(--admin-border);
+  overflow: hidden;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 100px 120px 120px;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.table-header {
+  background: var(--admin-bg);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--admin-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--admin-border);
+}
+
+.table-row {
+  border-bottom: 1px solid var(--admin-border);
+  transition: background 0.2s;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row:hover {
+  background: var(--admin-bg);
+}
+
+.position {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--admin-primary);
+}
+
+.user-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--admin-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 2px solid var(--admin-primary);
+}
+
+.level {
+  font-weight: 600;
+  color: var(--admin-primary);
+}
+
+.points {
+  font-weight: 700;
+  color: var(--admin-gold);
+}
+
+.xp {
+  font-weight: 600;
+  color: var(--admin-purple);
+}
+
+.user-engagement {
+  margin-bottom: 3rem;
+}
+
+.user-engagement h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin-bottom: 1.5rem;
+}
+
+.engagement-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--admin-border);
+}
+
+.engagement-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.engagement-card h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin-bottom: 1.5rem;
+}
+
+.progress-circle {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin-bottom: 1rem;
+}
+
+.progress-circle svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg);
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--admin-text);
+}
+
+.engagement-card p {
+  font-size: 0.9375rem;
+  color: var(--admin-text-light);
+}
+
+.engagement-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.engagement-stat {
+  text-align: center;
+}
+
+.engagement-stat h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--admin-text-light);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-big {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--admin-text);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.engagement-stat span {
+  font-size: 0.875rem;
+  color: var(--admin-text-light);
+}
+
+@media (max-width: 1024px) {
+  .table-header,
+  .table-row {
+    grid-template-columns: 60px 1fr 80px 100px 100px;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .engagement-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .engagement-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 50px 1fr 70px;
+    font-size: 0.875rem;
+  }
+
+  .points,
+  .xp {
+    display: none;
+  }
+
+  .engagement-stats {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .progress-circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .progress-text {
+    font-size: 2rem;
+  }
+}
