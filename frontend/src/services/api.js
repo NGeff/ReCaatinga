@@ -147,8 +147,8 @@ export const progressAPI = {
   updateProgress: (data) => api.post('/progress', data),
   completeGame: (gameId, data) => api.post(`/progress/game/${gameId}/complete`, data),
   getOverall: () => api.get('/progress/overall'),
-  markVideoWatched: (phaseId) => api.post(`/progress/phase/${phaseId}/video`),
-  completeMission: (missionId, data) => api.post(`/progress/mission/${missionId}/complete`, data),
+  markVideoWatched: (phaseId) => api.post(`/progress/video/${phaseId}`),
+  completeMission: (missionId, data) => api.post(`/progress/mission/${missionId}`, data),
   setActiveBadge: (data) => api.post('/progress/badge', data),
 };
 
