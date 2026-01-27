@@ -143,6 +143,10 @@ export const progressAPI = {
   getMissionProgress: (missionId) => api.get(`/progress/mission/${missionId}`),
   updateProgress: (data) => api.post('/progress', data),
   completeGame: (gameId, data) => api.post(`/progress/game/${gameId}/complete`, data),
+  getOverall: () => api.get('/progress/overall'),
+  markVideoWatched: (phaseId) => api.post(`/progress/phase/${phaseId}/video`),
+  completeMission: (missionId, data) => api.post(`/progress/mission/${missionId}/complete`, data),
+  setActiveBadge: (data) => api.post('/progress/badge', data),
 };
 
 export const rankingAPI = {
@@ -169,6 +173,7 @@ export const analyticsAPI = {
 export const taskAPI = {
   submit: (missionId, data) => api.post(`/tasks/submit/${missionId}`, data),
   getSubmissions: () => api.get('/tasks/submissions'),
+  getMySubmissions: () => api.get('/tasks/my-submissions'),
   getMissionSubmissions: (missionId) => api.get(`/tasks/submissions/mission/${missionId}`),
   getPendingReviews: () => api.get('/tasks/pending'),
   review: (submissionId, data) => api.put(`/tasks/review/${submissionId}`, data),
