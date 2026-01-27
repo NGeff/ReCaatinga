@@ -101,6 +101,13 @@ export const uploadAPI = {
   },
 };
 
+export const userAPI = {
+  getAll: () => api.get('/users'),
+  getById: (id) => api.get(`/users/${id}`),
+  update: (id, data) => api.put(`/users/${id}`, data),
+  delete: (id) => api.delete(`/users/${id}`),
+};
+
 export const phaseAPI = {
   getAll: () => api.get('/phases'),
   getById: (id) => api.get(`/phases/${id}`),
@@ -140,6 +147,7 @@ export const progressAPI = {
 
 export const rankingAPI = {
   getGlobalRanking: (limit = 10) => api.get(`/ranking?limit=${limit}`),
+  getTop: (limit = 10) => api.get(`/ranking?limit=${limit}`),
   getUserRank: () => api.get('/ranking/me'),
   getPhaseRanking: (phaseId, limit = 10) => api.get(`/ranking/phase/${phaseId}?limit=${limit}`),
 };
