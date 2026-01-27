@@ -134,6 +134,7 @@ export const gameAPI = {
   create: (data) => api.post('/games', data),
   update: (id, data) => api.put(`/games/${id}`, data),
   delete: (id) => api.delete(`/games/${id}`),
+  submitAnswer: (gameId, data) => api.post(`/games/${gameId}/submit`, data),
   submitScore: (gameId, score) => api.post(`/games/${gameId}/submit`, { score }),
 };
 
