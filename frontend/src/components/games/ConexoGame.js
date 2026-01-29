@@ -85,46 +85,92 @@ const ConexoGame = ({ game, onComplete, onExit }) => {
     }
   };
 
-  if (groups.length === 0) return <div className="game-card"><div className="game-error">Nenhum grupo disponível.</div></div>;
+  if (groups.length === 0) {
+    return (
+      <div className="game-card">
+        <div className="game-error">Nenhum grupo disponível.</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="game-card">
+    <div className="game-card conexo-game">
       <div className="game-header">
         <div className="conexo-stats">
-          <div className="stat-item"><span>Grupos: {foundGroups.length}/{groups.length}</span></div>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {Array.from({ length: maxMistakes }).map((_, i) => <span key={i} style={{ width: '12px', height: '12px', borderRadius: '50%', background: i < mistakes ? 'var(--game-red)' : 'var(--game-border)', transition: 'all 0.3s' }} />)}
+          <div className="stat-item">
+            <span>Grupos: {foundGroups.length}/{groups.length}</span>
+          </div>
+          <div className="mistakes-dots">
+            {Array.from({ length: maxMistakes }).map((_, i) => (
+              <span
+                key={i}
+                className={`mistake-dot ${i < mistakes ? 'active' : ''}`}
+              />
+            ))}
           </div>
         </div>
-        {game.timeLimit > 0 && <div className={`game-timer ${timeLeft <= 10 ? 'timer-warning' : ''}`}>⏱️ {timeLeft}s</div>}
+        {game.timeLimit > 0 && (
+          <div className={`game-timer ${timeLeft <= 10 ? 'timer-warning' : ''}`}>
+            ⏱️ {timeLeft}s
+          </div>
+        )}
       </div>
 
-      <div style={{ marginBottom: '2rem', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
+      <div className="conexo-content">
+        <div className="found-groups">
           {foundGroups.map((group, index) => (
-            <div key={index} style={{ padding: '1rem 1.5rem', borderRadius: '1rem', color: 'white', background: group.color }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.25rem', opacity: 0.9 }}>{group.category}</div>
-              <div style={{ fontSize: '1rem', fontWeight: 600 }}>{group.words.join(', ')}</div>
+            <div
+              key={index}
+              className="found-group"
+              style={{ background: group.color }}
+            >
+              <div className="group-category">{group.category}</div>
+              <div className="group-words">{group.words.join(', ')}</div>
             </div>
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }} className={shake ? 'shake' : ''}>
+        <div className={`words-grid ${shake ? 'shake' : ''}`}>
           {allWords.map((word, index) => (
-            <button key={index} onClick={() => handleWordClick(word)} style={{ padding: '1.25rem', background: selectedWords.find(w => w.text === word.text) ? 'var(--game-primary)' : 'linear-gradient(135deg, rgba(249, 250, 251, 0.9) 0%, rgba(243, 244, 246, 0.7) 100%)', backdropFilter: 'blur(8px)', border: `2px solid ${selectedWords.find(w => w.text === word.text) ? 'var(--game-primary)' : 'rgba(229, 231, 235, 0.7)'}`, borderRadius: '0.75rem', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s', textAlign: 'center', color: selectedWords.find(w => w.text === word.text) ? 'white' : 'var(--game-text)' }}>
+            <button
+              key={index}
+              onClick={() => handleWordClick(word)}
+              className={`word-button ${selectedWords.find(w => w.text === word.text) ? 'selected' : ''}`}
+            >
               {word.text}
             </button>
           ))}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-          <button onClick={() => setAllWords(shuffleArray([...allWords]))} className="btn btn-outline btn-sm">🔀 Embaralhar</button>
-          <button onClick={() => setSelectedWords([])} disabled={selectedWords.length === 0} className="btn btn-outline btn-sm">Limpar Seleção</button>
-          <button onClick={handleSubmit} disabled={selectedWords.length !== 4} className="btn btn-primary btn-sm">Enviar</button>
+        <div className="conexo-actions">
+          <button
+            onClick={() => setAllWords(shuffleArray([...allWords]))}
+            className="btn btn-outline btn-sm"
+          >
+            🔀 Embaralhar
+          </button>
+          <button
+            onClick={() => setSelectedWords([])}
+            disabled={selectedWords.length === 0}
+            className="btn btn-outline btn-sm"
+          >
+            Limpar
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={selectedWords.length !== 4}
+            className="btn btn-primary btn-sm"
+          >
+            Enviar
+          </button>
         </div>
       </div>
 
-      <div className="game-actions"><button className="btn btn-outline" onClick={onExit}>Sair</button></div>
+      <div className="game-actions">
+        <button className="btn btn-outline" onClick={onExit}>
+          Sair
+        </button>
+      </div>
     </div>
   );
 };
